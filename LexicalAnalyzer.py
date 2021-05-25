@@ -12,7 +12,6 @@ class LexicalAnalyzer:
 
 
     def parse(self, m, token_type, token_lexeme):
-        print("{0} e {1}".format(m.start(), self.lin_start))
         col = m.start() - self.lin_start
         self.column.append(col)
         self.token.append(token_type)
