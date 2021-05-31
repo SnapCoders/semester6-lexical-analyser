@@ -4,23 +4,21 @@ from Buffer import Buffer
 from LexicalAnalyzer import LexicalAnalyzer
 
 if __name__ == "__main__":
-    arq = open("program.c", "r")
-    print("Codigo fonte: {}".format(arq.read()))
+    file = open("program.c", "r")
+    print("Codigo fonte: \n{}".format(file.read()))
 
-    Buffer = Buffer()
+    buffer = Buffer()
     Analyzer = LexicalAnalyzer()
 
     token = []
     lexeme = []
     row = []
-    column = []
 
     print("Analise lexica:")
-    for i in Buffer.load_buffer():
-        t, lex, lin, col = Analyzer.tokenize(i)
+    for i in buffer.load_buffer():
+        t, lex, lin = Analyzer.tokenize(i)
         token += t
         lexeme += lex
         row += lin
-        column += col
 
     print("\nTokens reconhecidos: {}".format(list(set(token))))
