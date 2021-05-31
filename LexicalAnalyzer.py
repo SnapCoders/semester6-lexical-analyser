@@ -8,16 +8,13 @@ class LexicalAnalyzer:
     token = []
     lexeme = []
     row = []
-    column = []
 
 
-    def parse(self, m, token_type, token_lexeme):
-        col = m.start() - self.lin_start
-        self.column.append(col)
+    def parse(self, token_type, token_lexeme):
         self.token.append(token_type)
         self.lexeme.append(token_lexeme)
         self.row.append(self.lin_num)
-        print('Token = {0}, Simbolo= \'{1}\', Linha = {2}, Coluna = {3}'.format(token_type, token_lexeme, self.lin_num, col))
+        print('Token = {0}, Simbolo= \'{1}\', Linha = {2}'.format(token_type, token_lexeme, self.lin_num))
 
     def tokenize(self, code):
 
@@ -58,7 +55,7 @@ class LexicalAnalyzer:
             ('INTEGER_CONST', 
             r'\d(\d)*'),                # INT
             ('NEWLINE', r'\n'),         # NEW LINE
-            ('MISMATCH', r'[. |]'),     # DOT and PIPE 
+            ('MISMATCH', r'[. | &]'),     # DOT and PIPE 
         ]
 
         tokens_join = '|'.join('(?P<%s>%s)' % x for x in rules)
@@ -69,11 +66,11 @@ class LexicalAnalyzer:
             if token_type == 'NEWLINE':
                 self.lin_start = m.end()
                 self.lin_num += 1
-            elif token_type == 'COMMENT':
+            elif token_type == 'SPACE':
                 continue
             elif token_type == 'MISMATCH':
                 sys.exit('ERROR: %r unexpected on line %d' % (token_lexeme, self.lin_num))
             else:
-                self.parse(m, token_type, token_lexeme)
+                self.parse(token_type, token_lexeme)
 
-        return self.token, self.lexeme, self.row, self.column
+        return self.token, self.lexeme, self.row
